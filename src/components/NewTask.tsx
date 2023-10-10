@@ -34,14 +34,18 @@ export function NewTask() {
   }
 
   function deleteComment(taskToDelete: String) {
-    const tasksWithoutDeleteOne = tasks.filter((task) => {
-      if (task == taskToDelete) {
-        return;
-      } else if (task != taskToDelete) {
-        return task;
+    const taskIndexToDelete = tasks.findIndex((task) => task === taskToDelete);
+
+    if (taskIndexToDelete !== -1) {
+      const taskIsCompleted = taskIndexToDelete < countTaskState;
+
+      const tasksWithoutDeleteOne = tasks.filter((_, index) => index !== taskIndexToDelete);
+      setTasks(tasksWithoutDeleteOne);
+
+      if (taskIsCompleted) {
+        setCountTaskState(countTaskState - 1);
       }
-    });
-    setTasks(tasksWithoutDeleteOne);
+    }
   }
 
   return (
